@@ -161,15 +161,13 @@ function TierStep({ form, setForm, onBack, onNext }) {
         ))}
       </div>
 
-      <div style={{ marginTop: 32, padding: 18, background: "var(--paper)", border: "1px solid var(--line)", borderRadius: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      <div className="card" style={{ marginTop: 32, padding: 18, background: "var(--paper)", border: "1px solid var(--line)", borderRadius: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
           <div style={{ fontSize: 14, color: "var(--ink-3)" }}>
-            Where will I sit? See the auditorium layout coloured by tier below.
+            Where will I sit? The auditorium below highlights your selected tier's rows.
           </div>
         </div>
-        <div style={{ marginTop: 16, maxHeight: 340, overflow: "auto" }}>
-          <SeatMap density="tight" highlightTier={form.tierId} showLegend={false} />
-        </div>
+        <SeatMap highlightTier={form.tierId} showLegend={true} />
       </div>
 
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: 24 }}>
@@ -186,9 +184,11 @@ function ReviewStep({ form, tier, onBack, onNext }) {
       <h2 style={{ fontSize: 24, fontWeight: 600, margin: "0 0 6px", letterSpacing: "-0.015em" }}>Review &amp; confirm</h2>
       <p style={{ color: "var(--ink-3)", margin: "0 0 28px" }}>Make sure everything looks right before payment.</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
+      <div className="form-row">
         <ReviewBox label="Member" value={form.primary + (form.spouse ? ` & ${form.spouse}` : "")} />
         <ReviewBox label="Mobile" value={form.mobile} mono />
+      </div>
+      <div className="form-row" style={{ marginBottom: 24 }}>
         <ReviewBox label="Email" value={form.email} />
         <ReviewBox label="Address" value={form.address || "—"} />
       </div>

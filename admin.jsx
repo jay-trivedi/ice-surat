@@ -59,13 +59,14 @@ function AdminDashboard({ go, setTab }) {
         <Stat label="Seats allocated" value={stats.seatsAllocated.toLocaleString("en-IN")} foot="across all events" />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16, marginTop: 16 }}>
+      <div className="grid-2-1">
         <div className="card">
           <div className="card-h">
             <h3>Upcoming events</h3>
             <button className="btn btn-sm btn-ghost" onClick={() => setTab("events")}>Manage all →</button>
           </div>
-          <table className="tbl">
+          <div style={{ overflowX: "auto" }}>
+          <table className="tbl" style={{ minWidth: 480 }}>
             <thead>
               <tr><th>Event</th><th>Date</th><th>Status</th><th style={{ textAlign: "right" }}>Allocated</th><th /></tr>
             </thead>
@@ -94,6 +95,7 @@ function AdminDashboard({ go, setTab }) {
               })}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="card">
@@ -123,14 +125,16 @@ function AdminDashboard({ go, setTab }) {
         </div>
       </div>
 
-      <div className="card" style={{ marginTop: 16 }}>
+      <div className="card" style={{ marginTop: 16, overflow: "hidden" }}>
         <div className="card-h">
           <h3>Tier breakdown</h3>
           <div style={{ display: "flex", gap: 8 }}>
             <button className="btn btn-sm btn-ghost" onClick={() => { const n = exportMembersCSV(); window.dispatchEvent(new CustomEvent("ice-toast", { detail: { text: `Exported ${n} members to CSV.`, kind: "ok" } })); }}>Export members CSV</button>
           </div>
         </div>
-        <TierBreakdown />
+        <div style={{ overflowX: "auto" }}>
+          <TierBreakdown />
+        </div>
       </div>
     </>
   );
@@ -237,7 +241,8 @@ function AdminMembers() {
       </div>
 
       <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-        <table className="tbl">
+        <div style={{ overflowX: "auto" }}>
+          <table className="tbl" style={{ minWidth: 720 }}>
           <thead>
             <tr>
               <th>Member</th>
@@ -278,6 +283,7 @@ function AdminMembers() {
             })}
           </tbody>
         </table>
+        </div>
         {filtered.length === 0 && <div className="empty-state"><h4>No members match</h4><div>Adjust filters or clear the search.</div></div>}
       </div>
       <div style={{ marginTop: 12, fontSize: 12, color: "var(--ink-3)", textAlign: "right" }}>
@@ -307,7 +313,7 @@ function AdminEvents({ setTab }) {
         <button className="btn btn-accent" onClick={startCreate}>+ Add event</button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+      <div className="grid-2">
         {events.map(ev => {
           const alloc = state.allocations[ev.id] || {};
           return (
@@ -361,7 +367,7 @@ function EventModal({ initial, onClose }) {
   }
   return (
     <div className="modal-bg" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 540 }}>
+      <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 540, width: "100%" }}>
         <h2 style={{ margin: "0 0 4px", fontSize: 22, fontWeight: 600 }}>{form.isNew ? "New event" : "Edit event"}</h2>
         <p style={{ color: "var(--ink-3)", margin: "0 0 20px", fontSize: 13 }}>Season 2026–27</p>
 
@@ -420,7 +426,6 @@ function EventModal({ initial, onClose }) {
 function AdminAllocation({ params }) {
   const events = listEvents();
   const [eventId, setEventId] = useState(params?.eventId || events[0]?.id || null);
-  const [density, setDensity] = useState("default");
   const [tierFilter, setTierFilter] = useState("");
   const [picked, setPicked] = useState(null);
   const [, force] = useState(0);
@@ -466,10 +471,10 @@ function AdminAllocation({ params }) {
 
   return (
     <div>
-      <div className="card" style={{ padding: 16, marginBottom: 12, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ fontSize: 12, color: "var(--ink-3)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Event</div>
-          <select value={eventId} onChange={e => setEventId(e.target.value)} style={{ padding: "10px 12px", border: "1px solid var(--line)", borderRadius: 8, fontSize: 14, fontWeight: 600, background: "var(--bg)", minWidth: 280 }}>
+      <div className="card alloc-toolbar" style={{ padding: 16, marginBottom: 12, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 auto", minWidth: 0 }}>
+          <div style={{ fontSize: 12, color: "var(--ink-3)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600, flexShrink: 0 }}>Event</div>
+          <select value={eventId} onChange={e => setEventId(e.target.value)} style={{ padding: "10px 12px", border: "1px solid var(--line)", borderRadius: 8, fontSize: 14, fontWeight: 600, background: "var(--bg)", flex: "1 1 200px", minWidth: 0, maxWidth: "100%" }}>
             {events.map(ev => <option key={ev.id} value={ev.id}>{ev.name} · {ev.date}</option>)}
           </select>
         </div>
@@ -479,25 +484,19 @@ function AdminAllocation({ params }) {
             <span style={{ color: "var(--warn)" }}><b>{unallocatedCount}</b> unallocated members</span>
           )}
         </div>
-        <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+        <div className="alloc-toolbar-right" style={{ marginLeft: "auto", display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select value={tierFilter} onChange={e => setTierFilter(e.target.value)} style={{ padding: "8px 12px", border: "1px solid var(--line)", borderRadius: 8, background: "var(--bg)", fontSize: 13 }}>
             <option value="">Highlight: all tiers</option>
             {TIERS.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
-          <div className="pill-tabs" style={{ padding: 3 }}>
-            {["tight","default","comfortable"].map(d => (
-              <div key={d} className={"pill-tab" + (density === d ? " active" : "")} onClick={() => setDensity(d)} style={{ padding: "4px 10px", fontSize: 11 }}>{d}</div>
-            ))}
-          </div>
         </div>
       </div>
 
       <div className="two-col">
-        <div>
+        <div style={{ minWidth: 0, overflow: "hidden" }}>
           <SeatMap
             eventId={eventId}
             highlightTier={tierFilter || null}
-            density={density}
             onSeatClick={onSeatClick}
             mode="admin"
           />

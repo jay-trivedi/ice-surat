@@ -2,15 +2,15 @@
    landing.jsx — Public landing page
    ========================================================= */
 
+const { useRef } = React;
+
 function Landing({ go }) {
   return (
     <>
       <Hero go={go} />
       <AboutICE />
       <AboutSurSanidhya />
-      <Tiers go={go} />
-      <HowItWorks />
-      <SeatingExplainer />
+      <EventGallery />
       <Contact />
     </>
   );
@@ -221,11 +221,11 @@ function SeatingExplainer() {
           fills row T onwards by payment date.
         </p>
 
-        <div style={{ marginTop: 56, position: "relative" }}>
+        <div className="card" style={{ marginTop: 56, position: "relative" }}>
           <div className="seatmap-mobile-hint">
             <span>← swipe to see the full auditorium →</span>
           </div>
-          <SeatMap density="tight" showLegend={true} />
+          <SeatMap showLegend={true} />
         </div>
 
         <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
@@ -239,6 +239,74 @@ function SeatingExplainer() {
               <div style={{ fontSize: 14, color: "var(--ink-2)", lineHeight: 1.5 }}>{b.d}</div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Past event gallery — placeholders the institute will swap with real photos
+const GALLERY = [
+  { title: "Surangini · Classical Evening", caption: "Pandit Anil Kulkarni, Tabla: Ustad Akram Khan", date: "Sep 2024", tone: "warm", icon: "🎻" },
+  { title: "Hasya Ratri 2024", caption: "An evening of Gujarati stand-up at Sanjeev Kumar Auditorium", date: "Jul 2024", tone: "ink", icon: "🎤" },
+  { title: "Maa Re Maa", caption: "Gujarati family drama, sold-out evening", date: "Apr 2024", tone: "cream", icon: "🎭" },
+  { title: "Sufi Saanjh", caption: "Sufi ensemble with guest qawwals from Ajmer", date: "Feb 2024", tone: "warm", icon: "🪕" },
+  { title: "Annual Mushaira", caption: "Curated Urdu poetry recital", date: "Jan 2024", tone: "ink", icon: "📜" },
+  { title: "Sangeet Sandhya", caption: "Members' own talent night, hosted by the cultural sub-committee", date: "Nov 2023", tone: "cream", icon: "🎶" },
+];
+
+function EventGallery() {
+  const [index, setIndex] = useState(0);
+  const trackRef = useRef(null);
+  const total = GALLERY.length;
+
+  function step(d) { setIndex(i => (i + d + total) % total); }
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+    const cards = trackRef.current.querySelectorAll(".gallery-card");
+    const target = cards[index];
+    if (target) target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [index]);
+
+  return (
+    <section className="section gallery-section">
+      <div className="container">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32, gap: 16, flexWrap: "wrap" }}>
+          <div>
+            <div className="section-eyebrow">From previous seasons</div>
+            <h2 className="section-title" style={{ marginBottom: 0 }}>An evening, a year, a tradition.</h2>
+          </div>
+          <div className="gallery-controls">
+            <button className="btn btn-sm btn-ghost" onClick={() => step(-1)} aria-label="Previous">←</button>
+            <span className="num" style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--ink-3)", padding: "0 12px" }}>
+              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <button className="btn btn-sm btn-ghost" onClick={() => step(1)} aria-label="Next">→</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="gallery-track-wrap">
+        <div className="gallery-track" ref={trackRef}>
+          {GALLERY.map((g, i) => (
+            <div key={i} className={"gallery-card tone-" + g.tone} onClick={() => setIndex(i)}>
+              <div className="gallery-art">
+                <div className="gallery-icon">{g.icon}</div>
+                <div className="gallery-frame-tag">PHOTO · {g.date}</div>
+              </div>
+              <div className="gallery-meta">
+                <div className="gallery-card-title">{g.title}</div>
+                <div className="gallery-card-cap">{g.caption}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container" style={{ marginTop: 24 }}>
+        <div style={{ fontSize: 12, color: "var(--ink-3)", fontFamily: "var(--font-mono)", letterSpacing: "0.04em" }}>
+          // Photo placeholders · institute archive to be added
         </div>
       </div>
     </section>

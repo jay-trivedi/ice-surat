@@ -9,7 +9,6 @@ function SeatMap({
   eventId = null,               // if set, paint allocations
   selectedSeats = [],           // seat ids to outline (e.g. user-picking)
   selectableTier = null,        // restrict click to this tier
-  density = "default",          // tight | default | comfortable
   showLegend = true,
   onSeatClick = null,
   showOnlyTiers = null,         // array of tier ids to render (others get muted)
@@ -135,7 +134,7 @@ function SeatMap({
       <div className="seatmap-scroll">
         <div className="seatmap-inner">
           <div className="stage-bar">Stage</div>
-          <div className={"seatmap density-" + density}>
+          <div className={"seatmap"}>
         {SEAT_SPEC.map(({ row, segs }) => {
           const rowTotal = segs.reduce((sum, [a, b]) => sum + Math.abs(a - b) + 1, 0);
           const rowEl = (
