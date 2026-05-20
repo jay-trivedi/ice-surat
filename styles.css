@@ -663,11 +663,37 @@ table.tbl {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 28px 24px 24px;
-  overflow: auto;
+  overflow: hidden;
+}
+.seatmap-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-4) transparent;
+}
+.seatmap-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.seatmap-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.seatmap-scroll::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+  transition: background 0.15s;
+}
+.seatmap-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-4);
+}
+.seatmap-inner {
+  width: max-content;
+  min-width: 100%;
+  margin: 0 auto;
 }
 .stage-bar {
   margin: 0 auto 32px;
-  max-width: 60%;
+  width: 60%;
   text-align: center;
   border-bottom: 2px solid var(--ink);
   padding-bottom: 8px;
@@ -694,7 +720,7 @@ table.tbl {
 }
 .seat-row {
   display: flex;
-  gap: 12px;
+  gap: 2px;
   align-items: center;
 }
 .row-label {
@@ -705,12 +731,23 @@ table.tbl {
   width: 18px;
   text-align: center;
   letter-spacing: 0.04em;
+  margin: 0 10px;
+  flex-shrink: 0;
 }
 .seg {
   display: flex;
   gap: 2px;
 }
-.seg-gap { width: 14px; flex-shrink: 0; }
+/* Horizontal cross-aisles between H/I and P/Q (~2 seats tall) */
+.row-aisle {
+  width: 100%;
+  height: calc(var(--seat-size, 14px) * 2 + 4px);
+  flex-shrink: 0;
+}
+.seg-gap { flex-shrink: 0; }
+.seg-gap.g4 { width: calc(var(--seat-size, 14px) * 4 + 6px); }
+.seg-gap.g3 { width: calc(var(--seat-size, 14px) * 3 + 4px); }
+.seg-gap.g2 { width: calc(var(--seat-size, 14px) * 2 + 2px); }
 
 .seat {
   width: 14px;
@@ -728,13 +765,35 @@ table.tbl {
   z-index: 5;
   box-shadow: 0 4px 12px rgba(10, 31, 61, 0.2);
 }
-.seat.reserved { background: var(--ink); cursor: default; }
+.seat.reserved {
+  background: var(--ink);
+  cursor: default;
+  position: relative;
+}
+.seat.reserved::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  background: var(--paper);
+  border-radius: 1px;
+}
 .seat.reserved:hover { transform: none; box-shadow: none; }
 .seat.blocked {
   background: var(--ink-4);
   background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 3px);
 }
 .seat.allocated { background: var(--accent); }
+.seat.side {
+  position: relative;
+}
+.seat.side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.85) 0 1.5px, transparent 1.5px 3.5px);
+  border-radius: inherit;
+  pointer-events: none;
+}
 .seat.selected {
   outline: 2px solid var(--accent-2);
   outline-offset: 1px;
@@ -781,12 +840,13 @@ table.tbl {
 }
 
 /* Compact size variant */
+.seatmap { --seat-size: 14px; }
+.seatmap.density-tight { --seat-size: 11px; }
 .seatmap.density-tight .seat { width: 11px; height: 11px; }
-.seatmap.density-tight .seg-gap { width: 10px; }
-.seatmap.density-tight .seat-row { gap: 8px; }
+.seatmap.density-tight .seat-row { gap: 2px; }
 
+.seatmap.density-comfortable { --seat-size: 16px; }
 .seatmap.density-comfortable .seat { width: 16px; height: 16px; }
-.seatmap.density-comfortable .seg-gap { width: 18px; }
 
 /* Legend */
 .legend {
@@ -944,13 +1004,11 @@ table.tbl {
   body { font-size: 14px; }
   .container, .container-wide { padding: 0 16px; }
 
-  /* Topnav: keep brand visible, collapse nav into hamburger */
+  /* Topnav: hide brand subtitle, collapse nav into hamburger */
   .topnav-inner { height: 60px; }
-  .brand { gap: 10px; min-width: 0; }
   .brand-mark { width: 40px; height: 40px; }
-  .brand-name { min-width: 0; }
   .brand-name .t1 { font-size: 13px; }
-  .brand-name .t2 { font-size: 9px; letter-spacing: 0.08em; }
+  .brand-name .t2 { display: none; }
 
   .nav-links { display: none; }
   .nav-toggle { display: grid !important; }
@@ -1057,29 +1115,10 @@ table.tbl {
   /* Stepper — vertical/condensed on mobile */
   .stepper-wrap { flex-direction: column !important; align-items: stretch !important; }
 
-  /* Seat map: shrink to fit phone width by default; admin keeps scroll */
-  .seatmap-wrap { padding: 16px 8px; overflow: hidden; }
-  .seatmap-wrap.admin-scroll { overflow-x: auto; }
-  .stage-bar { max-width: 80%; margin-bottom: 18px; font-size: 10px; letter-spacing: 0.2em; }
-  .stage-bar::before, .stage-bar::after { width: 30px; }
-  .stage-bar::before { left: -30px; }
-  .stage-bar::after { right: -30px; }
-  .legend { gap: 8px 12px; padding: 10px 10px; font-size: 10px; }
-  .legend-swatch { width: 10px; height: 10px; }
-
-  .seatmap { gap: 2px; }
-  .seatmap .seat { width: 5px; height: 5px; border-radius: 1px; }
-  .seatmap .seat:hover { transform: none; box-shadow: none; }
-  .seatmap .seg { gap: 1px; }
-  .seatmap .seg-gap { width: 6px; }
-  .seatmap .seat-row { gap: 5px; }
-  .seatmap .row-label { width: 12px; font-size: 8px; }
-
-  .seatmap.density-tight .seat { width: 4px; height: 4px; }
-  .seatmap.density-tight .seg-gap { width: 5px; }
-  .seatmap.density-tight .seat-row { gap: 4px; }
-  .seatmap.density-comfortable .seat { width: 6px; height: 6px; }
-  .seatmap.density-comfortable .seg-gap { width: 7px; }
+  /* Seat map: stays as a horizontal scroll region */
+  .seatmap-wrap { padding: 16px 12px; }
+  .stage-bar { max-width: 200px; }
+  .legend { gap: 10px 14px; padding: 10px 12px; font-size: 11px; }
 
   /* Toasts */
   .toast-stack { left: 12px; right: 12px; bottom: 12px; }
@@ -1093,11 +1132,104 @@ table.tbl {
 @media (max-width: 380px) {
   .hero-title { font-size: 32px; }
   .section-title { font-size: 24px; }
-  .brand { gap: 8px; }
-  .brand-mark { width: 36px; height: 36px; }
-  .brand-name .t1 { font-size: 12px; }
-  .brand-name .t2 { font-size: 8.5px; }
+  .brand-name { display: none; }
 }
+
+/* ===== Forced viewport (Tweak) ===== */
+body.force-mobile {
+  background: #2a2a2e;
+}
+body.force-mobile .app {
+  width: 390px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+}
+body.force-mobile .topnav {
+  position: relative;
+}
+body.force-mobile .container,
+body.force-mobile .container-wide {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+/* Re-apply all mobile rules inside the forced container */
+body.force-mobile .topnav-inner { height: 60px; }
+body.force-mobile .brand-mark { width: 40px; height: 40px; }
+body.force-mobile .brand-name .t2 { display: none; }
+body.force-mobile .nav-links { display: none; }
+body.force-mobile .nav-toggle { display: grid; }
+body.force-mobile.nav-mobile-open .nav-links {
+  display: flex;
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 390px;
+  background: var(--paper);
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px 16px;
+  border-bottom: 1px solid var(--line);
+  z-index: 30;
+}
+body.force-mobile .hero { padding: 40px 0 56px; }
+body.force-mobile .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+body.force-mobile .hero-title { font-size: 38px; }
+body.force-mobile .hero-sub { font-size: 16px; }
+body.force-mobile .hero-art { aspect-ratio: 4/5; }
+body.force-mobile .ticket { padding: 20px !important; }
+body.force-mobile .ticket-title { font-size: 22px; }
+body.force-mobile .section { padding: 48px 0; }
+body.force-mobile .section-title { font-size: 28px; }
+body.force-mobile .section-lead { font-size: 15px; }
+body.force-mobile .tier-grid { grid-template-columns: 1fr !important; gap: 10px; }
+body.force-mobile .tier-card { padding: 18px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+body.force-mobile .tier-card .tier-swatch { margin: 0; width: 36px; height: 36px; }
+body.force-mobile .tier-card .tier-code { margin: 0; }
+body.force-mobile .tier-card .tier-name { font-size: 18px; margin: 0; grid-column: 2 / 3; grid-row: 1 / 2; }
+body.force-mobile .tier-card .tier-rows { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; font-size: 12px; }
+body.force-mobile .tier-card .tier-fee { grid-column: 3 / 4; grid-row: 1 / 3; font-size: 20px; text-align: right; }
+body.force-mobile .tier-card .tier-fee small { display: none; }
+body.force-mobile .tier-card .tier-rule { grid-column: 1 / 4; grid-row: 3 / 4; margin-top: 12px; padding-top: 12px; }
+body.force-mobile .steps { grid-template-columns: 1fr !important; }
+body.force-mobile .step { border-right: none; border-bottom: 1px solid var(--line); padding: 20px 16px; }
+body.force-mobile .step:last-child { border-bottom: none; }
+body.force-mobile .section [style*="grid-template-columns: 1fr 1.6fr"],
+body.force-mobile .section [style*="grid-template-columns: 1fr 1fr"],
+body.force-mobile .section [style*="grid-template-columns: 1.15fr 1fr"] {
+  grid-template-columns: 1fr !important;
+  gap: 32px !important;
+}
+body.force-mobile .section [style*="grid-template-columns: repeat(4, 1fr)"] {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+body.force-mobile .section [style*="grid-template-columns: repeat(3, 1fr)"] {
+  grid-template-columns: 1fr !important;
+}
+body.force-mobile [style*="grid-template-columns: 1.4fr 1fr"],
+body.force-mobile [style*="grid-template-columns: repeat(2, 1fr)"] {
+  grid-template-columns: 1fr !important;
+}
+body.force-mobile .footer { padding: 40px 0 24px; }
+body.force-mobile .footer-grid { grid-template-columns: 1fr !important; gap: 28px; margin-bottom: 24px; }
+body.force-mobile .footer-foot { flex-direction: column; gap: 10px; align-items: flex-start; }
+body.force-mobile .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+body.force-mobile .stat { padding: 14px 16px; }
+body.force-mobile .stat-value { font-size: 24px; }
+body.force-mobile .card { padding: 18px; }
+body.force-mobile .card-pad-lg { padding: 20px; }
+body.force-mobile .page { padding: 24px 0 56px; }
+body.force-mobile .page-title { font-size: 24px; }
+body.force-mobile .form-row { grid-template-columns: 1fr !important; gap: 12px; }
+body.force-mobile .pill-tabs { flex-wrap: wrap; }
+body.force-mobile .two-col { grid-template-columns: 1fr !important; }
+body.force-mobile .stepper-wrap { flex-direction: column !important; align-items: stretch !important; }
+body.force-mobile .seatmap-wrap { padding: 16px 12px; }
+body.force-mobile .stage-bar { max-width: 200px; margin-left: auto; margin-right: auto; }
+body.force-mobile .legend { gap: 10px 14px; padding: 10px 12px; font-size: 11px; }
+body.force-mobile .modal { padding: 20px; }
 
 /* Hamburger control — desktop hides it via the rule above */
 .nav-toggle {
@@ -1111,3 +1243,19 @@ table.tbl {
 }
 .nav-toggle:hover { background: var(--bg-2); }
 .nav-toggle svg { width: 18px; height: 18px; stroke: var(--ink); }
+
+/* Seatmap mobile swipe hint */
+.seatmap-mobile-hint {
+  display: none;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+@media (max-width: 640px) {
+  .seatmap-mobile-hint { display: flex; }
+}
+body.force-mobile .seatmap-mobile-hint { display: flex; }

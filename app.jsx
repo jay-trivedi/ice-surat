@@ -29,8 +29,7 @@ function App() {
     "accent": "#0b4ea2",
     "accentSecondary": "#c45a2e",
     "fontSans": "Plus Jakarta Sans",
-    "density": "default",
-    "showInkAccent": true
+    "viewport": "desktop"
   }/*EDITMODE-END*/);
   const [toasts, setToasts] = useState([]);
 
@@ -68,6 +67,15 @@ function App() {
     r.setProperty("--font-sans", `"${tweaks.fontSans}", system-ui, sans-serif`);
   }, [tweaks]);
 
+  // Toggle body class for forced mobile viewport
+  useEffect(() => {
+    if (tweaks.viewport === "mobile") {
+      document.body.classList.add("force-mobile");
+    } else {
+      document.body.classList.remove("force-mobile");
+    }
+  }, [tweaks.viewport]);
+
   const go = (r, p) => window.__nav(r, p);
 
   return (
@@ -82,8 +90,20 @@ function App() {
       <Footer />
 
       <ToastStack toasts={toasts} />
+      {tweaks.viewport === "mobile" && <div className="viewport-badge">Mobile · 390px</div>}
 
       <TweaksPanel>
+        <TweakSection label="Preview as">
+          <TweakRadio
+            label="Viewport"
+            value={tweaks.viewport}
+            onChange={v => setTweak("viewport", v)}
+            options={[
+              { value: "desktop", label: "Desktop" },
+              { value: "mobile", label: "Mobile" },
+            ]}
+          />
+        </TweakSection>
         <TweakSection label="Brand">
           <TweakColor
             label="Primary accent"

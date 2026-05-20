@@ -67,8 +67,8 @@ const SEAT_SPEC = [
   { row: "U", segs: [[56,46],[45,35],[34,23],[22,12],[11,1]] },
   { row: "V", segs: [[56,46],[45,35],[34,23],[22,12],[11,1]] },
 
-  // Row W: widest with extra-outer left wing — 68 seats total
-  { row: "W", segs: [[68,58],[57,46],[45,35],[34,23],[22,12],[11,1]] },
+  // Row W: widest — 68 seats, continuous (no aisle gaps)
+  { row: "W", segs: [[68,1]] },
 ];
 
 // Hardcoded reserved seat list (admin-blocked)

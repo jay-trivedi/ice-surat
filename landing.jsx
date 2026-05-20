@@ -221,7 +221,10 @@ function SeatingExplainer() {
           fills row T onwards by payment date.
         </p>
 
-        <div style={{ marginTop: 56 }}>
+        <div style={{ marginTop: 56, position: "relative" }}>
+          <div className="seatmap-mobile-hint">
+            <span>← swipe to see the full auditorium →</span>
+          </div>
           <SeatMap density="tight" showLegend={true} />
         </div>
 

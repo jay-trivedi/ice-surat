@@ -43,6 +43,12 @@ function SeatMap({
     }
     if (allocations[sid]) {
       cls.push("allocated");
+    } else {
+      // mark "10% less side" seats — excluded from auto-allocation in rotation tiers
+      const tier = TIERS.find(t => t.id === tierId);
+      if (tier && (tier.rule === "rotation" || tier.rule === "softrotation")) {
+        if (sideSeats(row).has(sid)) cls.push("side");
+      }
     }
     if (selectedSet.has(sid)) cls.push("selected");
     if (showOnlyTierSet && !showOnlyTierSet.has(tierId)) {
@@ -83,7 +89,7 @@ function SeatMap({
   };
 
   return (
-    <div className={"seatmap-wrap" + (mode === "admin" ? " admin-scroll" : "")}>
+    <div className="seatmap-wrap">
       {showLegend && (
         <div className="legend">
           {TIERS.map(t => (
@@ -93,8 +99,24 @@ function SeatMap({
             </div>
           ))}
           <div className="legend-item">
-            <div className="legend-swatch" style={{ background: "var(--ink)" }} />
-            <span>Reserved</span>
+            <div className="legend-swatch" style={{ background: "var(--ink)", position: "relative" }}>
+              <div style={{ position: "absolute", inset: "30%", background: "var(--paper)", borderRadius: 1 }} />
+            </div>
+            <span>House reserved</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-swatch" style={{
+              background: tierColor("m45"),
+              position: "relative",
+              overflow: "hidden"
+            }}>
+              <div style={{
+                position: "absolute", inset: 0,
+                backgroundImage: "repeating-linear-gradient(135deg, rgba(255,255,255,0.85) 0 1.5px, transparent 1.5px 3.5px)",
+                borderRadius: "inherit"
+              }} />
+            </div>
+            <span>10% side · excluded from rotation</span>
           </div>
           <div className="legend-item">
             <div className="legend-swatch" style={{
@@ -110,12 +132,13 @@ function SeatMap({
         </div>
       )}
 
-      <div className="stage-bar">Stage</div>
-
-      <div className={"seatmap density-" + density}>
+      <div className="seatmap-scroll">
+        <div className="seatmap-inner">
+          <div className="stage-bar">Stage</div>
+          <div className={"seatmap density-" + density}>
         {SEAT_SPEC.map(({ row, segs }) => {
           const rowTotal = segs.reduce((sum, [a, b]) => sum + Math.abs(a - b) + 1, 0);
-          return (
+          const rowEl = (
             <div key={row} className="seat-row">
               <div className="row-label">{row}</div>
               {segs.map(([start, end], i) => {
@@ -139,14 +162,28 @@ function SeatMap({
                 return (
                   <React.Fragment key={i}>
                     <div className="seg">{seats}</div>
-                    {i < segs.length - 1 && <div className="seg-gap" />}
+                    {i < segs.length - 1 && (
+                      <div className={"seg-gap " + gapClass(i, segs.length)} />
+                    )}
                   </React.Fragment>
                 );
               })}
               <div className="row-label">{row}</div>
             </div>
           );
+          // Horizontal aisles after H and after P (2 seats tall)
+          if (row === "H" || row === "P") {
+            return (
+              <React.Fragment key={row}>
+                {rowEl}
+                <div className="row-aisle" aria-hidden="true" />
+              </React.Fragment>
+            );
+          }
+          return rowEl;
         })}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -163,6 +200,20 @@ function tierColor(id) {
     m20: "#4f9a3b",
     m15: "#d35438",
   }[id];
+}
+
+// Aisle gap widths per gap index, from left to right.
+// Reference layout: each aisle = 3 seats wide (4 aisles × 3 = 12, matching W = V + 12).
+function gapClass(gapIndex, totalSegs) {
+  const gapCount = totalSegs - 1;
+  if (gapCount === 4) {
+    return ["g3", "g3", "g3", "g3"][gapIndex];
+  }
+  if (gapCount === 2) {
+    // Only the two central aisles
+    return ["g3", "g3"][gapIndex];
+  }
+  return "g3";
 }
 
 // Add muted style
