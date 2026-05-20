@@ -1407,11 +1407,10 @@ body.force-mobile .gallery-track { padding: 0 8% 16px; gap: 14px; }
   gap: 16px;
   margin-top: 16px;
 }
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
+/* Make sure cards don't get pushed wider than their grid cell on small screens */
+.grid-2, .grid-2-1, .grid-3 { min-width: 0; }
+.grid-2 > *, .grid-2-1 > *, .grid-3 > * { min-width: 0; }
+.card { min-width: 0; }
 @media (max-width: 820px) {
   .grid-2, .grid-2-1, .grid-3 { grid-template-columns: 1fr !important; }
 }

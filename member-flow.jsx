@@ -283,7 +283,7 @@ function SuccessStep({ member, tier, go }) {
       <p style={{ color: "var(--ink-3)", margin: "0 0 24px" }}>Your couple membership for season 2026–27 is now active.</p>
 
       <div style={{ background: "var(--ink)", color: "white", padding: 24, borderRadius: 10, textAlign: "left", position: "relative" }}>
-        <div className="brand-mark on-dark" style={{ position: "absolute", top: 18, right: 18, width: 56, height: 56 }}><img src="assets/ice-logo.png" alt="ICE Surat" /></div>
+        <div className="brand-mark on-dark" style={{ position: "absolute", top: 18, right: 18, width: 56, height: 56 }}><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16, paddingBottom: 16, borderBottom: "1px dashed rgba(255,255,255,0.25)", paddingRight: 60 }}>
           <div>
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Membership No.</div>

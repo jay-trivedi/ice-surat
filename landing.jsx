@@ -59,7 +59,7 @@ function Hero({ go }) {
               <div className="ticket-title">
                 <small>Sur Sanidhya</small>
                 <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-                  <div className="brand-mark lg" style={{ flexShrink: 0 }}><img src="assets/ice-logo.png" alt="ICE Surat" /></div>
+                  <div className="brand-mark lg" style={{ flexShrink: 0 }}><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
                   <div>Couple Membership<br /> Free Flow</div>
                 </div>
               </div>
@@ -259,31 +259,31 @@ function EventGallery() {
   const [index, setIndex] = useState(0);
   const trackRef = useRef(null);
   const total = GALLERY.length;
+  const mounted = useRef(false);
 
   function step(d) { setIndex(i => (i + d + total) % total); }
 
   useEffect(() => {
+    // skip initial mount so the page doesn't auto-scroll into the gallery
+    if (!mounted.current) { mounted.current = true; return; }
     if (!trackRef.current) return;
     const cards = trackRef.current.querySelectorAll(".gallery-card");
     const target = cards[index];
-    if (target) target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    if (!target) return;
+    // scroll only horizontally inside the track, not the page
+    const track = trackRef.current;
+    const trackRect = track.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const delta = (targetRect.left + targetRect.width / 2) - (trackRect.left + trackRect.width / 2);
+    track.scrollBy({ left: delta, behavior: "smooth" });
   }, [index]);
 
   return (
     <section className="section gallery-section">
       <div className="container">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32, gap: 16, flexWrap: "wrap" }}>
-          <div>
-            <div className="section-eyebrow">From previous seasons</div>
-            <h2 className="section-title" style={{ marginBottom: 0 }}>An evening, a year, a tradition.</h2>
-          </div>
-          <div className="gallery-controls">
-            <button className="btn btn-sm btn-ghost" onClick={() => step(-1)} aria-label="Previous">←</button>
-            <span className="num" style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--ink-3)", padding: "0 12px" }}>
-              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <button className="btn btn-sm btn-ghost" onClick={() => step(1)} aria-label="Next">→</button>
-          </div>
+        <div style={{ marginBottom: 32 }}>
+          <div className="section-eyebrow">From previous seasons</div>
+          <h2 className="section-title" style={{ marginBottom: 0 }}>An evening, a year, a tradition.</h2>
         </div>
       </div>
 
@@ -355,7 +355,7 @@ function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand" style={{ marginBottom: 18 }}>
-              <div className="brand-mark on-dark"><img src="assets/ice-logo.png" alt="ICE Surat" /></div>
+              <div className="brand-mark on-dark"><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
               <div className="brand-name">
                 <div className="t1" style={{ color: "white" }}>Institute of Civil Engineers, Surat</div>
                 <div className="t2">Sur Sanidhya · Cultural Membership</div>

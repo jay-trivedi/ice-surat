@@ -111,12 +111,12 @@ function AdminDashboard({ go, setTab }) {
               {recentAudit.map((a, i) => {
                 const ev = events.find(e => e.id === a.eventId);
                 return (
-                  <li key={i} style={{ padding: "12px 0", borderBottom: i < recentAudit.length - 1 ? "1px solid var(--line-2)" : "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                    <div>
+                  <li key={i} style={{ padding: "12px 0", borderBottom: i < recentAudit.length - 1 ? "1px solid var(--line-2)" : "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                    <div style={{ minWidth: 0, flex: "1 1 200px", wordBreak: "break-word" }}>
                       <div style={{ fontSize: 14 }}><b>Allocation run</b> · {ev ? ev.name : a.eventId}</div>
                       <div style={{ fontSize: 12, color: "var(--ink-3)" }}>{a.allocated} seats · {a.unallocated} unallocated</div>
                     </div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-4)" }}>{new Date(a.ts).toLocaleString("en-IN")}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-4)", whiteSpace: "nowrap" }}>{new Date(a.ts).toLocaleString("en-IN")}</div>
                   </li>
                 );
               })}

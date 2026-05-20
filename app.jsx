@@ -158,7 +158,7 @@ function TopNav({ route, go }) {
     <header className={"topnav" + (open ? " nav-mobile-open" : "")}>
       <div className="container-wide topnav-inner">
         <div className="brand" onClick={() => go("landing")}>
-          <div className="brand-mark"><img src="assets/ice-logo.png" alt="ICE Surat" /></div>
+          <div className="brand-mark"><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
           <div className="brand-name">
             <div className="t1">ICE Surat · <em style={{ fontStyle: "normal", fontFamily: "var(--font-serif)", fontWeight: 500, color: "var(--accent)" }}>Sur Sanidhya</em></div>
             <div className="t2">Institute of Civil Engineers · 2026–27</div>
