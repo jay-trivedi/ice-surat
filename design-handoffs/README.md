@@ -1,8 +1,8 @@
 # Design Handoff Archive
 
-Each `.tar.gz` here is a raw bundle from a single `claude.ai/design` handoff link.
+The single `.tar.gz` here is the most recent raw bundle from `claude.ai/design`. Older dumps are replaced on each sync (we keep only the latest).
 
-Filename format: `<YYYY-MM-DDTHH-MM>-<handoff-id>.tar.gz`. Sort chronologically to see the evolution; the most recent one corresponds to the live site state at that commit.
+Filename format: `<YYYY-MM-DDTHH-MM>-<handoff-id>.tar.gz`. The file present corresponds to the live site state at that commit.
 
 Inside each tarball:
 - `ice-surat/project/` — the source files at handoff time (`.jsx`, `.css`, `index.html`)

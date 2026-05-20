@@ -40,9 +40,9 @@ function Intro({ go }) {
         <p className="intro-lead">
           ICE Surat is a member-led association of practising civil engineers,
           consultants and contractors across South Gujarat. Beyond technical
-          practice, the institute has long sponsored an annual cultural season
-          for its members — five to six curated evenings of theatre, music, and
-          comedy — known today as <em>Sur Sanidhya</em>.
+          practice, the institute is now launching its first annual cultural
+          season for members — five to six curated evenings of theatre, music,
+          and comedy — under the banner of <em>Sur Sanidhya</em>.
         </p>
 
         <div className="intro-cta">
@@ -85,7 +85,7 @@ function Program() {
         <p className="section-lead">
           One yearly contribution covers admission for a couple to every event of
           the season — natak, classical, comedy, mushaira and more — at Sanjeev
-          Kumar Auditorium. Seats are arranged by category, never by first-click.
+          Kumar Auditorium.
         </p>
 
         <div className="program-grid">
@@ -276,7 +276,7 @@ function Footer() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, maxWidth: 360, lineHeight: 1.6 }}>
               A non-profit fraternity of civil engineers in South Gujarat,
-              sponsoring an annual cultural season for its members since 2004.
+              launching its first annual cultural season for members in 2026–27.
             </p>
           </div>
           <div>
