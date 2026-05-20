@@ -4,7 +4,7 @@ Interactive hi-fi prototype of the membership + event-wise seat allocation web a
 
 This is a design-stage prototype: React via CDN + Babel-standalone, no build step. All data lives in `localStorage`. Mock API in `store.jsx` can be swapped for a real backend later.
 
-Hosted at: https://ice.jay.cloud
+Hosted at: https://ice.jay.trivedi.cloud
 
 ## Run locally
 
