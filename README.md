@@ -4,8 +4,8 @@ Membership + event-wise seat allocation web app for **Institute of Civil Enginee
 
 This repo holds two things:
 
-1. **`/` (root) — the design prototype.** Pixel-perfect interactive mock produced via [claude.ai/design](https://claude.ai/design). React + Babel via CDN, no build step, all data in `localStorage`. Hosted at <https://ice.jay.trivedi.cloud> as a stand-in until the real app is ready.
-2. **`webapp/` — the production app (not yet scaffolded).** Will be a Vite + React + TS app deployed on **Cloudflare Pages**, with **Pages Functions** for the API layer and **Cloudflare D1** for the database. Razorpay plugs into the payment flow later. Will replace the root prototype on the same domain (`ice.jay.trivedi.cloud`) once ready.
+1. **`design/` — the design prototype.** Pixel-perfect interactive mock produced via [claude.ai/design](https://claude.ai/design). React + Babel via CDN, no build step, all data in `localStorage`. Currently hosted at <https://ice.jay.trivedi.cloud> as a stand-in until the real app is ready.
+2. **`webapp/` — the production app (not yet scaffolded).** Will be a Vite + React + TS app deployed on **Cloudflare Pages**, with **Pages Functions** for the API layer and **Cloudflare D1** for the database. Razorpay plugs into the payment flow later. Will replace the prototype on the same domain once ready.
 
 The prototype stays around as a visual reference for the production build.
 
@@ -37,26 +37,28 @@ Razorpay webhooks → payment confirmation
 ## Prototype: run locally
 
 ```sh
-cd ~/ice-surat
+cd ~/ice-surat/design
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
 (Any static file server works — nothing to build.)
 
-## Prototype: file layout
+## Repo layout
 
-- `index.html` — entry, loads React + Babel from CDN and the `.jsx` files below
-- `data.jsx` — seeded tiers, sample members, reserved seats, per-row seat counts
-- `store.jsx` — mock API + localStorage persistence + allocation engine
-- `seatmap.jsx` — full A–W auditorium grid component
-- `landing.jsx` — public landing page (intro, program, gallery, office bearers, contact)
-- `member-flow.jsx` — 5-step signup → mock payment → membership card → portal
-- `admin.jsx` — organiser console (overview, members, events, allocation)
-- `app.jsx` — top-level router + topnav
-- `tweaks-panel.jsx` — design tweaks panel (brand accent, font, reset demo)
-- `styles.css` — single stylesheet
-- `assets/` — ICE Surat logo + favicon
+- `design/` — the hosted prototype source
+  - `index.html` — entry, loads React + Babel from CDN and the `.jsx` files below
+  - `data.jsx` — seeded tiers, sample members, reserved seats, per-row seat counts
+  - `store.jsx` — mock API + localStorage persistence + allocation engine
+  - `seatmap.jsx` — full A–W auditorium grid component
+  - `landing.jsx` — public landing page (intro, program, gallery, office bearers, contact)
+  - `member-flow.jsx` — 5-step signup → mock payment → membership card → portal
+  - `admin.jsx` — organiser console (overview, members, events, allocation)
+  - `app.jsx` — top-level router + topnav
+  - `tweaks-panel.jsx` — design tweaks panel (brand accent, font, reset demo)
+  - `styles.css` — single stylesheet
+  - `assets/` — ICE Surat logo + favicon
+- `webapp/` — production Vite/TS/Pages/D1 app (not yet scaffolded)
 - `design-handoffs/` — most recent raw bundle from claude.ai/design (kept for reference; see folder's README)
 
 ## Tier rules
@@ -78,11 +80,11 @@ Reserved seats (never auto-allocated): **A7–A10, A23–A26, C1–C5**.
 
 When `webapp/` is scaffolded:
 
-- `store.jsx`'s mock API (`createMember`, `createMockPayment`, `allocateSeatsForEvent`, etc.) maps 1:1 onto Pages Functions endpoints under `webapp/functions/api/`.
-- `data.jsx`'s seed data (tiers, reserved seats, sample members) becomes `webapp/db/schema.sql` + `webapp/db/seed.sql` for D1.
-- The seat-allocation engine inside `store.jsx` moves to the backend largely unchanged.
+- `design/store.jsx`'s mock API (`createMember`, `createMockPayment`, `allocateSeatsForEvent`, etc.) maps 1:1 onto Pages Functions endpoints under `webapp/functions/api/`.
+- `design/data.jsx`'s seed data (tiers, reserved seats, sample members) becomes `webapp/db/schema.sql` + `webapp/db/seed.sql` for D1.
+- The seat-allocation engine inside `design/store.jsx` moves to the backend largely unchanged.
 - Razorpay plugs in where `createMockPayment()` currently lives — design the payment provider as a single interface so swap is a one-file change.
-- The prototype stays at the root for visual reference and can be served from a `/preview` route, or simply retired once the production app reaches parity.
+- The `design/` prototype stays around for visual reference and can be served from a `/preview` route, or simply retired once the production app reaches parity.
 
 ## Design handoff archive
 
