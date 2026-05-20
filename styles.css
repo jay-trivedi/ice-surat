@@ -1004,11 +1004,13 @@ table.tbl {
   body { font-size: 14px; }
   .container, .container-wide { padding: 0 16px; }
 
-  /* Topnav: hide brand subtitle, collapse nav into hamburger */
+  /* Topnav: keep brand visible, collapse nav into hamburger */
   .topnav-inner { height: 60px; }
+  .brand { gap: 10px; min-width: 0; }
   .brand-mark { width: 40px; height: 40px; }
+  .brand-name { min-width: 0; }
   .brand-name .t1 { font-size: 13px; }
-  .brand-name .t2 { display: none; }
+  .brand-name .t2 { font-size: 9px; letter-spacing: 0.08em; }
 
   .nav-links { display: none; }
   .nav-toggle { display: grid !important; }
@@ -1132,7 +1134,10 @@ table.tbl {
 @media (max-width: 380px) {
   .hero-title { font-size: 32px; }
   .section-title { font-size: 24px; }
-  .brand-name { display: none; }
+  .brand { gap: 8px; }
+  .brand-mark { width: 36px; height: 36px; }
+  .brand-name .t1 { font-size: 12px; }
+  .brand-name .t2 { font-size: 8.5px; }
 }
 
 /* ===== Forced viewport (Tweak) ===== */
@@ -1157,7 +1162,7 @@ body.force-mobile .container-wide {
 /* Re-apply all mobile rules inside the forced container */
 body.force-mobile .topnav-inner { height: 60px; }
 body.force-mobile .brand-mark { width: 40px; height: 40px; }
-body.force-mobile .brand-name .t2 { display: none; }
+body.force-mobile .brand-name .t2 { font-size: 9px; letter-spacing: 0.08em; }
 body.force-mobile .nav-links { display: none; }
 body.force-mobile .nav-toggle { display: grid; }
 body.force-mobile.nav-mobile-open .nav-links {
