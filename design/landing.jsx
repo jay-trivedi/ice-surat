@@ -302,7 +302,7 @@ function Footer() {
         </div>
         <div className="footer-foot">
           <div>© 2026 Institute of Civil Engineers, Surat. All rights reserved.</div>
-          <div>Made with <span aria-label="love" role="img">❤</span> by Janak Trivedi and Associates</div>
+          <div>Made with <span aria-label="love" role="img" style={{ color: '#e63946', margin: '0 0.25em' }}>❤</span> by Janak Trivedi and Associates</div>
         </div>
       </div>
     </footer>
