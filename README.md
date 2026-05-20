@@ -1,12 +1,40 @@
 # ICE Surat · Sur Sanidhya
 
-Interactive hi-fi prototype of the membership + event-wise seat allocation web app for **Institute of Civil Engineers, Surat** (cultural program: *Sur Sanidhya*).
+Membership + event-wise seat allocation web app for **Institute of Civil Engineers, Surat** (cultural program: *Sur Sanidhya*).
 
-This is a design-stage prototype: React via CDN + Babel-standalone, no build step. All data lives in `localStorage`. Mock API in `store.jsx` can be swapped for a real backend later.
+This repo holds two things:
 
-Hosted at: https://ice.jay.trivedi.cloud
+1. **`/` (root) — the design prototype.** Pixel-perfect interactive mock produced via [claude.ai/design](https://claude.ai/design). React + Babel via CDN, no build step, all data in `localStorage`. Hosted at <https://ice.jay.trivedi.cloud> as a stand-in until the real app is ready.
+2. **`webapp/` — the production app (not yet scaffolded).** Will be a Vite + React + TS app deployed on **Cloudflare Pages**, with **Pages Functions** for the API layer and **Cloudflare D1** for the database. Razorpay plugs into the payment flow later. Will replace the root prototype on the same domain (`ice.jay.trivedi.cloud`) once ready.
 
-## Run locally
+The prototype stays around as a visual reference for the production build.
+
+## Production stack (planned)
+
+| Layer | Service |
+|-------|---------|
+| Frontend | Cloudflare Pages |
+| Backend APIs | Cloudflare Pages Functions (escalate to standalone Workers only if needed) |
+| Database | Cloudflare D1 |
+| DNS | Cloudflare DNS |
+| Payments | Razorpay (mocked initially via `createMockPayment()`; real integration via webhook later) |
+| Static assets | Cloudflare Pages public assets (move to R2 if storage needs grow) |
+
+Scale target: ~500 members, 5–6 events/year. Hosting cost ≈ ₹0/month on this stack.
+
+```
+ice.jay.trivedi.cloud
+        ↓
+Cloudflare Pages (Vite/React/TS)
+        ↓
+Pages Functions (REST API)
+        ↓
+Cloudflare D1 (SQLite)
+        ↓
+Razorpay webhooks → payment confirmation
+```
+
+## Prototype: run locally
 
 ```sh
 cd ~/ice-surat
@@ -16,19 +44,20 @@ python3 -m http.server 8000
 
 (Any static file server works — nothing to build.)
 
-## Structure
+## Prototype: file layout
 
 - `index.html` — entry, loads React + Babel from CDN and the `.jsx` files below
 - `data.jsx` — seeded tiers, sample members, reserved seats, per-row seat counts
 - `store.jsx` — mock API + localStorage persistence + allocation engine
 - `seatmap.jsx` — full A–W auditorium grid component
-- `landing.jsx` — public landing page (hero, tiers, how-it-works, enquiry)
+- `landing.jsx` — public landing page (intro, program, gallery, office bearers, contact)
 - `member-flow.jsx` — 5-step signup → mock payment → membership card → portal
 - `admin.jsx` — organiser console (overview, members, events, allocation)
 - `app.jsx` — top-level router + topnav
 - `tweaks-panel.jsx` — design tweaks panel (brand accent, font, reset demo)
 - `styles.css` — single stylesheet
-- `assets/` — ICE Surat logo
+- `assets/` — ICE Surat logo + favicon
+- `design-handoffs/` — most recent raw bundle from claude.ai/design (kept for reference; see folder's README)
 
 ## Tier rules
 
@@ -45,13 +74,19 @@ python3 -m http.server 8000
 
 Reserved seats (never auto-allocated): **A7–A10, A23–A26, C1–C5**.
 
-## Notes for the production build
+## Migration notes (prototype → production)
 
-When this graduates to a real codebase (React + Vite + TS + Cloudflare D1/Workers per the original brief), the `store.jsx` mock layer maps 1:1 onto the data model. Razorpay plugs in where `createMockPayment` lives. The seat-allocation engine in `store.jsx` can move to the backend unchanged.
+When `webapp/` is scaffolded:
+
+- `store.jsx`'s mock API (`createMember`, `createMockPayment`, `allocateSeatsForEvent`, etc.) maps 1:1 onto Pages Functions endpoints under `webapp/functions/api/`.
+- `data.jsx`'s seed data (tiers, reserved seats, sample members) becomes `webapp/db/schema.sql` + `webapp/db/seed.sql` for D1.
+- The seat-allocation engine inside `store.jsx` moves to the backend largely unchanged.
+- Razorpay plugs in where `createMockPayment()` currently lives — design the payment provider as a single interface so swap is a one-file change.
+- The prototype stays at the root for visual reference and can be served from a `/preview` route, or simply retired once the production app reaches parity.
 
 ## Design handoff archive
 
-Each fresh handoff from `claude.ai/design` is saved verbatim under `design-handoffs/` as a timestamped `.tar.gz`. See `design-handoffs/README.md` for the layout. The hosted site builds from the top-level project files, not from this folder.
+Only the most recent raw bundle from `claude.ai/design` is kept, under `design-handoffs/` as a timestamped `.tar.gz`. See `design-handoffs/README.md` for the layout. The hosted prototype builds from the top-level project files, not from this folder.
 
 ---
 
