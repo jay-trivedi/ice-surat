@@ -7,9 +7,8 @@ const { useRef } = React;
 function Landing({ go }) {
   return (
     <>
-      <AboutICE />
-      <Hero go={go} />
-      <AboutSurSanidhya />
+      <Intro go={go} />
+      <Program />
       <EventGallery />
       <OfficeBearers />
       <Contact />
@@ -17,60 +16,56 @@ function Landing({ go }) {
   );
 }
 
-function Hero({ go }) {
+function Intro({ go }) {
   return (
-    <section className="hero">
+    <section className="intro">
       <div className="container">
-        <div className="hero-grid">
-          <div>
-            <div className="hero-eyebrow"><span className="dot" /> Cultural membership · 2026–27 season</div>
-            <h1 className="hero-title">
-              An auditorium-year for two,<br />
-              <em>curated</em> by your community.
-            </h1>
-            <p className="hero-sub">
-              <b>Sur Sanidhya</b> is the annual cultural membership of the
-              Institute of Civil Engineers, Surat. One yearly contribution covers
-              admission for a couple to every event of the season — natak, classical,
-              comedy and more — with category-based seating in our home auditorium.
-            </p>
-            <div className="hero-cta">
-              <button className="btn btn-accent btn-lg" onClick={() => go("signup")}>Become a member →</button>
-              <button className="btn btn-ghost btn-lg" onClick={() => go("admin")}>I'm an organiser</button>
-            </div>
-            <div style={{ marginTop: 40, display: "flex", gap: 32, fontSize: 13, color: "var(--ink-3)" }}>
-              <div><b style={{ color: "var(--ink)", fontSize: 22, fontWeight: 700, display: "block", marginBottom: 2 }}>5–6</b>events per season</div>
-              <div><b style={{ color: "var(--ink)", fontSize: 22, fontWeight: 700, display: "block", marginBottom: 2 }}>8</b>seating categories</div>
-              <div><b style={{ color: "var(--ink)", fontSize: 22, fontWeight: 700, display: "block", marginBottom: 2 }}>1,200+</b>auditorium seats</div>
-            </div>
-          </div>
+        <div className="intro-mark">
+          <div className="brand-mark xl"><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
+        </div>
 
-          <div className="hero-art">
-            <div className="ticket">
-              <div className="ticket-head">
-                <div>
-                  <div className="label">Membership No.</div>
-                  <div className="val">SS / 2026 / 0042</div>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div className="label">Season</div>
-                  <div className="val">2026 – 27</div>
-                </div>
-              </div>
-              <div className="ticket-title">
-                <small>Sur Sanidhya</small>
-                <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-                  <div className="brand-mark lg" style={{ flexShrink: 0 }}><img src={(window.__resources && window.__resources.iceLogo) || "assets/ice-logo.png"} alt="ICE Surat" /></div>
-                  <div>Couple Membership<br /> Free Flow</div>
-                </div>
-              </div>
-              <div className="ticket-perf" />
-              <div className="ticket-foot">
-                <div>Holder<b>Patel Family</b></div>
-                <div>Tier<b>Free Flow</b></div>
-                <div>Rows<b>A · B · C</b></div>
-              </div>
-            </div>
+        <div className="intro-meta">
+          <span>Institute of Civil Engineers, Surat</span>
+          <span className="dot" />
+          <span>Established 2004</span>
+          <span className="dot" />
+          <span>Athwa Lines, Surat</span>
+        </div>
+
+        <h1 className="intro-title">
+          A twenty-year-old fraternity of civil engineers in South Gujarat —
+          and a cultural <em>season</em> for its families.
+        </h1>
+
+        <p className="intro-lead">
+          ICE Surat is a member-led association of practising civil engineers,
+          consultants and contractors across South Gujarat. Beyond technical
+          practice, the institute has long sponsored an annual cultural season
+          for its members — five to six curated evenings of theatre, music, and
+          comedy — known today as <em>Sur Sanidhya</em>.
+        </p>
+
+        <div className="intro-cta">
+          <button className="btn btn-accent btn-lg" onClick={() => go("signup")}>Become a member →</button>
+          <button className="btn btn-ghost btn-lg" onClick={() => go("admin")}>I'm an organiser</button>
+        </div>
+
+        <div className="intro-stats">
+          <div className="intro-stat">
+            <div className="intro-stat-v">5–6</div>
+            <div className="intro-stat-l">events per season</div>
+          </div>
+          <div className="intro-stat">
+            <div className="intro-stat-v">8</div>
+            <div className="intro-stat-l">membership categories</div>
+          </div>
+          <div className="intro-stat">
+            <div className="intro-stat-v">1,200+</div>
+            <div className="intro-stat-l">auditorium seats</div>
+          </div>
+          <div className="intro-stat">
+            <div className="intro-stat-v">2026 – 27</div>
+            <div className="intro-stat-l">current season</div>
           </div>
         </div>
       </div>
@@ -78,37 +73,7 @@ function Hero({ go }) {
   );
 }
 
-function AboutICE() {
-  return (
-    <section className="section" style={{ borderTop: "none", paddingTop: 56 }}>
-      <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 80, alignItems: "flex-start" }}>
-          <div>
-            <div className="section-eyebrow">About the institute</div>
-            <h2 className="section-title">A 60-year-old fraternity of engineers in Surat.</h2>
-          </div>
-          <div style={{ fontSize: 17, lineHeight: 1.6, color: "var(--ink-2)" }}>
-            <p style={{ marginTop: 0 }}>
-              The <b>Institute of Civil Engineers, Surat</b> is a member-led
-              association of practising civil engineers, consultants and
-              contractors across South Gujarat. Beyond technical practice, the
-              institute has long sponsored cultural programming for its members
-              and their families — a tradition that today continues under the
-              banner of <em style={{ fontStyle: "normal", fontFamily: "var(--font-serif)", color: "var(--accent)" }}>Sur Sanidhya</em>.
-            </p>
-            <p>
-              The institute is not a ticketing platform. Every event is staged
-              for our own community — admission is by annual membership only,
-              and seating is arranged by category, not by first-click.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AboutSurSanidhya() {
+function Program() {
   return (
     <section className="section section-dark">
       <div className="container">
@@ -118,132 +83,52 @@ function AboutSurSanidhya() {
           A season of natak, sangeet, and laughter — for one annual fee.
         </h2>
         <p className="section-lead">
-          Five to six curated evenings per year at the Sanjeev Kumar Auditorium.
-          One membership covers a couple, with seats allocated per event
-          according to your category. No ticket queues, no seat-grab — just turn
-          up on the evening, find your row, and settle in.
+          One yearly contribution covers admission for a couple to every event of
+          the season — natak, classical, comedy, mushaira and more — at Sanjeev
+          Kumar Auditorium. Seats are arranged by category, never by first-click.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.12)", marginTop: 56, border: "1px solid rgba(255,255,255,0.12)" }}>
+        <div className="program-grid">
           {[
-            { k: "Natak", v: "Gujarati family dramas, tested troupes only." },
-            { k: "Classical", v: "Hindustani vocal and instrumental evenings." },
-            { k: "Comedy", v: "Stand-up sets curated for family audiences." },
-            { k: "Mushaira", v: "Annual Urdu poetry recital with guest poets." },
+            { k: "Natak",     v: "Gujarati family dramas — tested troupes only.",       icon: "🎭" },
+            { k: "Classical", v: "Hindustani vocal and instrumental evenings.",         icon: "🪕" },
+            { k: "Comedy",    v: "Stand-up sets curated for family audiences.",         icon: "🎤" },
+            { k: "Mushaira",  v: "The annual Urdu poetry recital with guest poets.",    icon: "📜" },
           ].map(item => (
-            <div key={item.k} style={{ background: "var(--ink)", padding: "28px 24px" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>Format</div>
-              <div style={{ fontFamily: "var(--font-serif)", fontSize: 24, marginBottom: 8 }}>{item.k}</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{item.v}</div>
+            <div className="program-card" key={item.k}>
+              <div className="program-icon">{item.icon}</div>
+              <div className="program-name">{item.k}</div>
+              <div className="program-desc">{item.v}</div>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
+}
+
+function Hero({ go }) {
+  return null;
+}
+
+function AboutICE() {
+  return null;
+}
+
+function AboutSurSanidhya() {
+  return null;
 }
 
 function Tiers({ go }) {
-  return (
-    <section className="section" id="tiers">
-      <div className="container">
-        <div className="section-eyebrow">Membership categories</div>
-        <h2 className="section-title">Pick your <em>row</em>, pay once.</h2>
-        <p className="section-lead">
-          Eight categories. Higher tiers are closer to the stage, with stricter
-          seating rules — Free Flow and M-25 are fixed-seat, mid-tiers rotate
-          fairly across allowed rows each event, and M-15 is first-come-first-served
-          by payment date.
-        </p>
-
-        <div className="tier-grid">
-          {TIERS.map(t => (
-            <div key={t.id} className="tier-card" onClick={() => go("signup", { tierId: t.id })}>
-              <div className="tier-swatch" style={{ background: tierColor(t.id) }} />
-              <div className="tier-code">{t.code}</div>
-              <h3 className="tier-name">{t.name}</h3>
-              <div className="tier-rows">Rows {t.rows.join(" · ")}</div>
-              <div className="tier-fee">₹{t.fee.toLocaleString("en-IN")}<small>/year · couple</small></div>
-              <div className="tier-rule">
-                <b>{t.ruleLabel}</b>
-                {t.desc}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ marginTop: 32, padding: 18, background: "var(--paper)", border: "1px dashed var(--line)", borderRadius: 8, fontSize: 13, color: "var(--ink-3)" }}>
-          <b style={{ color: "var(--ink)" }}>Each membership covers two seats.</b>
-          {" "}Seats A7–A10, A23–A26 and C1–C5 are house-reserved and never allocated to members.
-          {" "}Side-most 10% of seats in rotation rows are kept out of the rotation to ensure fair viewing.
-        </div>
-      </div>
-    </section>
-  );
+  return null;
 }
 
 function HowItWorks() {
-  const steps = [
-    { n: "01", t: "Fill the form", d: "Name, mobile, email, and address for the couple." },
-    { n: "02", t: "Pick a tier", d: "Choose a category. Annual fee shows automatically." },
-    { n: "03", t: "Pay online", d: "Mock payment for the demo; Razorpay slot ready in code." },
-    { n: "04", t: "Get membership", d: "Active membership number issued for the 2026–27 season." },
-    { n: "05", t: "Seats per event", d: "Organisers allocate seats event-by-event under tier rules." },
-  ];
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="section-eyebrow">How it works</div>
-        <h2 className="section-title">From form to your row, in five steps.</h2>
-        <div className="steps">
-          {steps.map(s => (
-            <div className="step" key={s.n}>
-              <div className="step-num">{s.n}</div>
-              <h3 className="step-title">{s.t}</h3>
-              <div className="step-desc">{s.d}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return null;
 }
 
 function SeatingExplainer() {
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="section-eyebrow">Event-wise seating</div>
-        <h2 className="section-title">Same membership, fresh seats every event.</h2>
-        <p className="section-lead">
-          Membership and event seating are deliberately separated. Each event in
-          the season runs its own allocation pass — fixed tiers keep their seat,
-          rotating tiers shift through their allowed rows, and first-come-first
-          fills row T onwards by payment date.
-        </p>
-
-        <div className="card" style={{ marginTop: 56, position: "relative" }}>
-          <div className="seatmap-mobile-hint">
-            <span>← swipe to see the full auditorium →</span>
-          </div>
-          <SeatMap showLegend={true} />
-        </div>
-
-        <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {[
-            { t: "Fixed", d: "Free Flow and M-25 members keep the same seat across the entire season." },
-            { t: "Rotation", d: "M-50, M-45, M-35 and M-30 rotate through their three allotted rows each event." },
-            { t: "First-come", d: "M-15 row T onwards fills by payment timestamp — earlier payers, better seats." },
-          ].map(b => (
-            <div key={b.t} className="card">
-              <div className="card-title">{b.t}</div>
-              <div style={{ fontSize: 14, color: "var(--ink-2)", lineHeight: 1.5 }}>{b.d}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return null;
 }
 
 // Past event gallery — placeholders the institute will swap with real photos
@@ -391,7 +276,7 @@ function Footer() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, maxWidth: 360, lineHeight: 1.6 }}>
               A non-profit fraternity of civil engineers in South Gujarat,
-              sponsoring an annual cultural season for its members since 1968.
+              sponsoring an annual cultural season for its members since 2004.
             </p>
           </div>
           <div>
