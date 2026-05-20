@@ -83,7 +83,7 @@ function SeatMap({
   };
 
   return (
-    <div className="seatmap-wrap">
+    <div className={"seatmap-wrap" + (mode === "admin" ? " admin-scroll" : "")}>
       {showLegend && (
         <div className="legend">
           {TIERS.map(t => (

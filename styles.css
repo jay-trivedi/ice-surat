@@ -1057,10 +1057,29 @@ table.tbl {
   /* Stepper — vertical/condensed on mobile */
   .stepper-wrap { flex-direction: column !important; align-items: stretch !important; }
 
-  /* Seat map: stays as a horizontal scroll region */
-  .seatmap-wrap { padding: 16px 12px; }
-  .stage-bar { max-width: 80%; }
-  .legend { gap: 10px 14px; padding: 10px 12px; font-size: 11px; }
+  /* Seat map: shrink to fit phone width by default; admin keeps scroll */
+  .seatmap-wrap { padding: 16px 8px; overflow: hidden; }
+  .seatmap-wrap.admin-scroll { overflow-x: auto; }
+  .stage-bar { max-width: 80%; margin-bottom: 18px; font-size: 10px; letter-spacing: 0.2em; }
+  .stage-bar::before, .stage-bar::after { width: 30px; }
+  .stage-bar::before { left: -30px; }
+  .stage-bar::after { right: -30px; }
+  .legend { gap: 8px 12px; padding: 10px 10px; font-size: 10px; }
+  .legend-swatch { width: 10px; height: 10px; }
+
+  .seatmap { gap: 2px; }
+  .seatmap .seat { width: 5px; height: 5px; border-radius: 1px; }
+  .seatmap .seat:hover { transform: none; box-shadow: none; }
+  .seatmap .seg { gap: 1px; }
+  .seatmap .seg-gap { width: 6px; }
+  .seatmap .seat-row { gap: 5px; }
+  .seatmap .row-label { width: 12px; font-size: 8px; }
+
+  .seatmap.density-tight .seat { width: 4px; height: 4px; }
+  .seatmap.density-tight .seg-gap { width: 5px; }
+  .seatmap.density-tight .seat-row { gap: 4px; }
+  .seatmap.density-comfortable .seat { width: 6px; height: 6px; }
+  .seatmap.density-comfortable .seg-gap { width: 7px; }
 
   /* Toasts */
   .toast-stack { left: 12px; right: 12px; bottom: 12px; }
