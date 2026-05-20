@@ -7,10 +7,11 @@ const { useRef } = React;
 function Landing({ go }) {
   return (
     <>
-      <Hero go={go} />
       <AboutICE />
+      <Hero go={go} />
       <AboutSurSanidhya />
       <EventGallery />
+      <OfficeBearers />
       <Contact />
     </>
   );
@@ -79,7 +80,7 @@ function Hero({ go }) {
 
 function AboutICE() {
   return (
-    <section className="section">
+    <section className="section" style={{ borderTop: "none", paddingTop: 56 }}>
       <div className="container">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 80, alignItems: "flex-start" }}>
           <div>
@@ -255,6 +256,44 @@ const GALLERY = [
   { title: "Sangeet Sandhya", caption: "Members' own talent night, hosted by the cultural sub-committee", date: "Nov 2023", tone: "cream", icon: "🎶" },
 ];
 
+function OfficeBearers() {
+  const bearers = [
+    { name: "Shri Bhavin Patel",    role: "President",                 tone: 0, note: "ICE Surat 2026–27" },
+    { name: "Shri Hiren Desai",     role: "Vice President",            tone: 1 },
+    { name: "Shri Mehul Shah",      role: "Hon. Secretary",            tone: 2 },
+    { name: "Shri Jignesh Mehta",   role: "Hon. Treasurer",            tone: 3 },
+    { name: "Shri Kalpesh Trivedi", role: "Cultural Committee Chair",  tone: 4, note: "Sur Sanidhya convener" },
+    { name: "Shri Nilesh Vyas",     role: "Joint Secretary",           tone: 5 },
+  ];
+  return (
+    <section className="section">
+      <div className="container">
+        <div className="section-eyebrow">Committee</div>
+        <h2 className="section-title">Office bearers, 2026–27.</h2>
+
+        <div className="bearer-grid">
+          {bearers.map((b, i) => (
+            <div className="bearer-card" key={i}>
+              <div className={"bearer-photo tone-" + b.tone} aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="32" cy="24" r="11" fill="currentColor" opacity="0.85" />
+                  <path d="M10 60 C 12 44, 22 38, 32 38 C 42 38, 52 44, 54 60 Z" fill="currentColor" opacity="0.85" />
+                </svg>
+                <div className="bearer-photo-tag">PHOTO</div>
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div className="bearer-role">{b.role}</div>
+                <div className="bearer-name">{b.name}</div>
+                {b.note && <div className="bearer-note">{b.note}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function EventGallery() {
   const [index, setIndex] = useState(0);
   const trackRef = useRef(null);
@@ -303,12 +342,6 @@ function EventGallery() {
           ))}
         </div>
       </div>
-
-      <div className="container" style={{ marginTop: 24 }}>
-        <div style={{ fontSize: 12, color: "var(--ink-3)", fontFamily: "var(--font-mono)", letterSpacing: "0.04em" }}>
-          // Photo placeholders · institute archive to be added
-        </div>
-      </div>
     </section>
   );
 }
@@ -317,30 +350,25 @@ function Contact() {
   return (
     <section className="section">
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80 }}>
+        <div className="section-eyebrow">Enquiry</div>
+        <h2 className="section-title">Become a member, or ask a question.</h2>
+        <p className="section-lead">
+          Membership intake for the 2026–27 season is open. Existing members
+          can simply renew with the same tier; new members can pick any
+          category subject to availability.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 40 }}>
           <div>
-            <div className="section-eyebrow">Enquiry</div>
-            <h2 className="section-title">Become a member, or ask a question.</h2>
-            <p className="section-lead">
-              Membership intake for the 2026–27 season is open. Existing members
-              can simply renew with the same tier; new members can pick any
-              category subject to availability.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 32, fontSize: 14 }}>
-              <div><b style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Office</b>Institute of Civil Engineers, Surat · Athwa Lines, Surat 395001</div>
-              <div><b style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Phone</b>+91 261 245 8000 (Tue–Sat, 11am – 6pm)</div>
-              <div><b style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Email</b>sursanidhya@icesurat.in</div>
-            </div>
+            <div style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>Office</div>
+            <div style={{ fontSize: 15 }}>Institute of Civil Engineers, Surat<br />Athwa Lines, Surat 395001</div>
           </div>
-          <div className="card card-pad-lg">
-            <h3 style={{ margin: "0 0 18px", fontSize: 20, fontWeight: 600 }}>Quick enquiry</h3>
-            <div className="form-row">
-              <div className="field"><label>Name</label><input placeholder="Your full name" /></div>
-              <div className="field"><label>Mobile</label><input placeholder="10-digit number" /></div>
-            </div>
-            <div className="field" style={{ marginBottom: 16 }}><label>Email</label><input placeholder="you@example.in" /></div>
-            <div className="field" style={{ marginBottom: 24 }}><label>Message</label><textarea rows="4" placeholder="Tell us what you'd like to know" /></div>
-            <button className="btn btn-primary" style={{ width: "100%" }} onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent("ice-toast", { detail: { text: "Thanks! We'll get back within 2 working days.", kind: "ok" } })); }}>Send enquiry</button>
+          <div>
+            <div style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>Phone</div>
+            <div style={{ fontSize: 15 }}>+91 261 245 8000<br /><span style={{ color: "var(--ink-3)", fontSize: 13 }}>Tue–Sat, 11am – 6pm</span></div>
+          </div>
+          <div>
+            <div style={{ display: "block", color: "var(--ink-3)", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>Email</div>
+            <div style={{ fontSize: 15 }}>sursanidhya@icesurat.in</div>
           </div>
         </div>
       </div>
@@ -389,7 +417,6 @@ function Footer() {
         </div>
         <div className="footer-foot">
           <div>© 2026 Institute of Civil Engineers, Surat. All rights reserved.</div>
-          <div>Prototype · committee preview</div>
         </div>
       </div>
     </footer>
